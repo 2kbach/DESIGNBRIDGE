@@ -63,9 +63,11 @@ const server = http.createServer((req, res) => {
 
         // Pipe the prompt to Claude Code CLI
         // Using --print for non-interactive mode
+        // Use absolute path — native host doesn't inherit shell PATH
+        const claudePath = process.env.CLAUDE_PATH || '/Users/kevinauerbach/.local/bin/claude';
         const escapedPrompt = prompt.replace(/'/g, "'\\''");
         const result = execSync(
-          `echo '${escapedPrompt}' | claude --print`,
+          `echo '${escapedPrompt}' | ${claudePath} --print`,
           {
             cwd: projectDir,
             encoding: 'utf8',
