@@ -1,11 +1,12 @@
 {
   "manifest_version": 3,
   "name": "DesignBridge",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Select elements visually, describe changes, send to Claude Code",
   "permissions": [
     "activeTab",
-    "clipboardWrite"
+    "clipboardWrite",
+    "nativeMessaging"
   ],
   "host_permissions": [
     "http://localhost:7890/*"

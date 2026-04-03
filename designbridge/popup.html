@@ -158,6 +158,49 @@
       transform: translateX(18px);
     }
 
+    /* ========== CONNECT CARD ========== */
+    .connect-card {
+      margin: 0 12px 12px;
+      text-align: center;
+    }
+
+    .connect-btn {
+      width: 100%;
+      padding: 11px 16px;
+      border: none;
+      border-radius: var(--system-radius);
+      background: var(--system-blue);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: -0.1px;
+      transition: filter 0.12s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .connect-btn:hover {
+      filter: brightness(0.92);
+    }
+
+    .connect-btn:active {
+      filter: brightness(0.85);
+      transform: scale(0.98);
+    }
+
+    .connect-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .connect-hint {
+      font-size: 11px;
+      color: var(--system-label-tertiary);
+      margin-top: 6px;
+      letter-spacing: -0.1px;
+    }
+
     /* ========== GROUPED LIST SECTIONS ========== */
     .list-section {
       margin: 0 12px 12px;
@@ -357,6 +400,11 @@
     <div class="status-indicator" id="statusDot"></div>
     <span class="status-label" id="statusText">Checking bridge...</span>
     <button class="inspect-toggle" id="toggleBtn" title="Toggle Inspect Mode"></button>
+  </div>
+
+  <div class="connect-card" id="connectCard" style="display: none;">
+    <button class="connect-btn" id="pickFolderBtn">Select Project Folder</button>
+    <div class="connect-hint">Pick the folder Claude Code should edit</div>
   </div>
 
   <div class="list-section">

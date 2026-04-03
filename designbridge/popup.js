@@ -1,4 +1,4 @@
-// DesignBridge Popup Script — Apple HIG controls
+// DesignBridge Popup Script — with auto-start bridge support
 
 const DEFAULTS = {
   stylePreset: 'all',
@@ -12,6 +12,8 @@ const DEFAULTS = {
 const statusDot = document.getElementById('statusDot');
 const statusText = document.getElementById('statusText');
 const toggleBtn = document.getElementById('toggleBtn');
+const connectCard = document.getElementById('connectCard');
+const pickFolderBtn = document.getElementById('pickFolderBtn');
 const stylePreset = document.getElementById('stylePreset');
 const depthValue = document.getElementById('depthValue');
 const depthMinus = document.getElementById('depthMinus');
@@ -23,7 +25,8 @@ const promptPrefix = document.getElementById('promptPrefix');
 let currentDepth = 3;
 let screenshotOn = true;
 
-// Load saved settings
+// ========== SETTINGS ==========
+
 chrome.storage.local.get('designbridge_settings', (data) => {
   const s = { ...DEFAULTS, ...(data.designbridge_settings || {}) };
   stylePreset.value = s.stylePreset;
@@ -35,7 +38,6 @@ chrome.storage.local.get('designbridge_settings', (data) => {
   promptPrefix.value = s.promptPrefix;
 });
 
-// Save settings
 function saveSettings() {
   const settings = {
     stylePreset: stylePreset.value,
@@ -44,9 +46,7 @@ function saveSettings() {
     promptPrefix: promptPrefix.value,
     bridgeUrl: bridgeUrl.value
   };
-
   chrome.storage.local.set({ designbridge_settings: settings });
-
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs[0]) {
       chrome.tabs.sendMessage(tabs[0].id, { type: 'updateSettings', settings });
@@ -54,87 +54,128 @@ function saveSettings() {
   });
 }
 
-// Stepper controls
 depthMinus.addEventListener('click', () => {
-  if (currentDepth > 1) {
-    currentDepth--;
-    depthValue.textContent = currentDepth;
-    saveSettings();
-  }
+  if (currentDepth > 1) { currentDepth--; depthValue.textContent = currentDepth; saveSettings(); }
 });
-
 depthPlus.addEventListener('click', () => {
-  if (currentDepth < 5) {
-    currentDepth++;
-    depthValue.textContent = currentDepth;
-    saveSettings();
-  }
+  if (currentDepth < 5) { currentDepth++; depthValue.textContent = currentDepth; saveSettings(); }
 });
-
-// Screenshot toggle (Apple-style)
 screenshotToggle.addEventListener('click', () => {
   screenshotOn = !screenshotOn;
   screenshotToggle.classList.toggle('active', screenshotOn);
   saveSettings();
 });
-
-// Other inputs
 stylePreset.addEventListener('change', saveSettings);
 bridgeUrl.addEventListener('change', saveSettings);
 promptPrefix.addEventListener('change', saveSettings);
 
-// Check bridge server status
+// ========== BRIDGE STATUS ==========
+
+function showConnected(projectName) {
+  statusDot.className = 'status-indicator connected';
+  statusText.textContent = projectName || 'Connected';
+  connectCard.style.display = 'none';
+  pickFolderBtn.disabled = false;
+  pickFolderBtn.textContent = 'Select Project Folder';
+}
+
+function showDisconnected() {
+  statusDot.className = 'status-indicator disconnected';
+  statusText.textContent = 'Not connected';
+  connectCard.style.display = 'block';
+  pickFolderBtn.disabled = false;
+  pickFolderBtn.textContent = 'Select Project Folder';
+}
+
+function showConnecting() {
+  statusDot.className = 'status-indicator';
+  statusText.textContent = 'Starting bridge...';
+  pickFolderBtn.disabled = true;
+  pickFolderBtn.textContent = 'Starting...';
+}
+
+// Check bridge via HTTP health endpoint
 async function checkBridge() {
   try {
     const url = bridgeUrl.value || DEFAULTS.bridgeUrl;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 2000);
 
-    const res = await fetch(url + '/health', {
-      method: 'GET',
-      signal: controller.signal
-    });
+    const res = await fetch(url + '/health', { method: 'GET', signal: controller.signal });
     clearTimeout(timeout);
 
     if (res.ok) {
       const data = await res.json();
-      statusDot.className = 'status-indicator connected';
-      statusText.textContent = data.project ? data.project : 'Connected';
-    } else {
-      statusDot.className = 'status-indicator disconnected';
-      statusText.textContent = 'Bridge error';
+      showConnected(data.project);
+      return true;
     }
-  } catch (e) {
-    statusDot.className = 'status-indicator disconnected';
-    statusText.textContent = 'Clipboard mode';
-  }
+  } catch (e) { /* not running */ }
+
+  // Also check if background has a running bridge via native messaging
+  chrome.runtime.sendMessage({ type: 'getBridgeStatus' }, (response) => {
+    if (chrome.runtime.lastError) { showDisconnected(); return; }
+    if (response?.running) {
+      showConnected(response.project);
+    } else {
+      showDisconnected();
+    }
+  });
+
+  return false;
 }
 
 checkBridge();
 
-// Inspect toggle (Apple-style toggle switch)
+// Listen for bridge status updates from background
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === 'bridgeStatus') {
+    if (msg.running) {
+      showConnected(msg.project);
+    } else {
+      showDisconnected();
+    }
+  }
+});
+
+// ========== FOLDER PICKER / AUTO-START ==========
+
+pickFolderBtn.addEventListener('click', () => {
+  showConnecting();
+
+  // Tell background to open folder picker and start bridge
+  chrome.runtime.sendMessage({ type: 'pickFolder' }, (response) => {
+    if (chrome.runtime.lastError) {
+      showDisconnected();
+      statusText.textContent = 'Install native host first';
+    }
+  });
+
+  // The bridge status will come back via the bridgeStatus message listener
+  // Set a timeout in case nothing comes back
+  setTimeout(() => {
+    if (statusText.textContent === 'Starting bridge...') {
+      checkBridge();
+    }
+  }, 5000);
+});
+
+// ========== INSPECT TOGGLE ==========
+
 toggleBtn.addEventListener('click', () => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs[0]) {
       chrome.tabs.sendMessage(tabs[0].id, { type: 'toggleInspect' }, (response) => {
-        if (response?.inspectMode) {
-          toggleBtn.classList.add('active');
-        } else {
-          toggleBtn.classList.remove('active');
-        }
+        toggleBtn.classList.toggle('active', response?.inspectMode);
       });
     }
   });
 });
 
-// Check current inspect state on popup open
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   if (tabs[0]) {
     chrome.tabs.sendMessage(tabs[0].id, { type: 'getStatus' }, (response) => {
       if (chrome.runtime.lastError) return;
-      if (response?.inspectMode) {
-        toggleBtn.classList.add('active');
-      }
+      if (response?.inspectMode) toggleBtn.classList.add('active');
     });
   }
 });

@@ -1,0 +1,7 @@
+{
+  "name": "com.designbridge.host",
+  "description": "DesignBridge native messaging host — starts bridge server and folder picker",
+  "path": "/Users/kevinauerbach/Desktop/CLAUDE DESIGNED/designbridge/native-host.js",
+  "type": "stdio",
+  "allowed_origins": []
+}
