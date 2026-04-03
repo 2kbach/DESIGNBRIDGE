@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 300px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 13px;
+      color: #1f2937;
+      background: #fff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body { background: #1f2937; color: #f3f4f6; }
+      .header { border-color: #374151; }
+      .section { border-color: #374151; }
+      label { color: #d1d5db; }
+      select, input[type="text"], input[type="number"] {
+        background: #111827; color: #f3f4f6; border-color: #374151;
+      }
+      .status-dot.connected { background: #34d399; }
+      .status-dot.disconnected { background: #f87171; }
+      .status-text { color: #9ca3af; }
+      .toggle-btn { background: #374151; color: #e5e7eb; border-color: #4b5563; }
+      .toggle-btn:hover { background: #4b5563; }
+      .toggle-btn.active { background: #6366f1; border-color: #6366f1; color: #fff; }
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .header img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .header h1 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #6366f1;
+    }
+
+    .header .version {
+      font-size: 10px;
+      color: #9ca3af;
+      margin-left: auto;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #9ca3af;
+      flex-shrink: 0;
+    }
+
+    .status-dot.connected { background: #10b981; }
+    .status-dot.disconnected { background: #ef4444; }
+
+    .status-text {
+      font-size: 11px;
+      color: #6b7280;
+      flex: 1;
+    }
+
+    .toggle-btn {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      color: #374151;
+      transition: all 0.15s ease;
+    }
+
+    .toggle-btn:hover {
+      background: #f3f4f6;
+    }
+
+    .toggle-btn.active {
+      background: #6366f1;
+      color: #fff;
+      border-color: #6366f1;
+    }
+
+    .section {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section h2 {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    select, input[type="text"], input[type="number"] {
+      padding: 4px 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 12px;
+      background: #fff;
+      color: #1f2937;
+      outline: none;
+    }
+
+    select:focus, input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+    }
+
+    input[type="number"] {
+      width: 50px;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      width: 170px;
+    }
+
+    .checkbox-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkbox-field input[type="checkbox"] {
+      accent-color: #6366f1;
+    }
+
+    .shortcut {
+      font-size: 10px;
+      color: #9ca3af;
+      text-align: center;
+      padding: 8px 16px;
+    }
+
+    kbd {
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-family: 'SF Mono', monospace;
+      font-size: 10px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      kbd { background: #374151; border-color: #4b5563; color: #d1d5db; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="icons/icon-48.png" alt="">
+    <h1>DesignBridge</h1>
+    <span class="version">v0.1.0</span>
+  </div>
+
+  <div class="status-row">
+    <div class="status-dot" id="statusDot"></div>
+    <span class="status-text" id="statusText">Checking bridge...</span>
+    <button class="toggle-btn" id="toggleBtn">Inspect</button>
+  </div>
+
+  <div class="section">
+    <h2>Capture Settings</h2>
+    <div class="field">
+      <label>Style capture</label>
+      <select id="stylePreset">
+        <option value="all">All properties</option>
+        <option value="layout">Layout only</option>
+        <option value="typography">Typography only</option>
+        <option value="colors">Colors only</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Parent context depth</label>
+      <input type="number" id="contextDepth" min="1" max="5" value="3">
+    </div>
+    <div class="field checkbox-field">
+      <input type="checkbox" id="includeScreenshot" checked>
+      <label for="includeScreenshot">Include element screenshot</label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Bridge Server</h2>
+    <div class="field">
+      <label>URL</label>
+      <input type="text" id="bridgeUrl" value="http://localhost:7890" placeholder="http://localhost:7890">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Prompt Prefix</h2>
+    <div class="field">
+      <input type="text" id="promptPrefix" style="width: 100%;" placeholder="e.g. Check the Tailwind config first">
+    </div>
+  </div>
+
+  <div class="shortcut">
+    Toggle inspect: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

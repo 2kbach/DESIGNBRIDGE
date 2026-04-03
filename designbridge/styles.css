@@ -1,0 +1,283 @@
+/* DesignBridge — Extension Overlay & Panel Styles */
+
+/* ========== HIGHLIGHT OVERLAY ========== */
+
+#designbridge-highlight {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2147483640;
+  background: rgba(99, 102, 241, 0.08);
+  border: 2px solid #6366f1;
+  border-radius: 2px;
+  transition: all 0.1s ease;
+  box-sizing: border-box;
+}
+
+/* ========== LABEL BADGE ========== */
+
+#designbridge-label {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2147483641;
+  background: #6366f1;
+  color: #fff;
+  font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========== FLOATING PANEL ========== */
+
+#designbridge-panel {
+  position: absolute;
+  z-index: 2147483642;
+  width: 320px;
+  max-height: 360px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+  animation: designbridge-fadein 0.15s ease;
+}
+
+@keyframes designbridge-fadein {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Panel header */
+.designbridge-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 6px;
+  border-bottom: none;
+}
+
+.designbridge-panel-tag {
+  font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6366f1;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.designbridge-panel-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.designbridge-panel-close:hover {
+  color: #374151;
+  background: #f3f4f6;
+}
+
+/* Selector path */
+.designbridge-panel-selector {
+  padding: 0 12px 8px;
+  font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+  font-size: 10px;
+  color: #9ca3af;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Text input */
+.designbridge-panel-input {
+  display: block;
+  width: calc(100% - 24px);
+  margin: 0 12px;
+  padding: 8px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1f2937;
+  background: #fafafa;
+  resize: vertical;
+  min-height: 60px;
+  max-height: 200px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.designbridge-panel-input::placeholder {
+  color: #9ca3af;
+}
+
+.designbridge-panel-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  background: #fff;
+}
+
+/* Action buttons row */
+.designbridge-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+.designbridge-panel-status {
+  flex: 1;
+  font-size: 11px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.designbridge-panel-status.success { color: #059669; }
+.designbridge-panel-status.error { color: #dc2626; }
+.designbridge-panel-status.warning { color: #d97706; }
+.designbridge-panel-status.info { color: #6366f1; }
+
+.designbridge-panel-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.designbridge-panel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.designbridge-panel-btn.primary {
+  background: #6366f1;
+  color: #fff;
+  border-color: #6366f1;
+}
+
+.designbridge-panel-btn.primary:hover:not(:disabled) {
+  background: #4f46e5;
+  border-color: #4f46e5;
+}
+
+.designbridge-panel-btn.secondary {
+  background: #fff;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.designbridge-panel-btn.secondary:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+/* Hint text */
+.designbridge-panel-hint {
+  padding: 0 12px 8px;
+  font-size: 10px;
+  color: #9ca3af;
+  text-align: right;
+}
+
+/* Response display */
+.designbridge-panel-response {
+  padding: 8px 12px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #374151;
+  background: #f0fdf4;
+  border-top: 1px solid #e5e7eb;
+  max-height: 180px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+}
+
+/* ========== DARK MODE ========== */
+
+@media (prefers-color-scheme: dark) {
+  #designbridge-panel {
+    background: #1f2937;
+    border-color: #374151;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .designbridge-panel-tag {
+    color: #818cf8;
+  }
+
+  .designbridge-panel-close {
+    color: #6b7280;
+  }
+
+  .designbridge-panel-close:hover {
+    color: #e5e7eb;
+    background: #374151;
+  }
+
+  .designbridge-panel-selector {
+    color: #6b7280;
+  }
+
+  .designbridge-panel-input {
+    background: #111827;
+    border-color: #374151;
+    color: #f3f4f6;
+  }
+
+  .designbridge-panel-input::placeholder {
+    color: #6b7280;
+  }
+
+  .designbridge-panel-input:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    background: #0f172a;
+  }
+
+  .designbridge-panel-btn.secondary {
+    background: #374151;
+    color: #e5e7eb;
+    border-color: #4b5563;
+  }
+
+  .designbridge-panel-btn.secondary:hover:not(:disabled) {
+    background: #4b5563;
+  }
+
+  .designbridge-panel-hint {
+    color: #6b7280;
+  }
+
+  .designbridge-panel-status {
+    color: #9ca3af;
+  }
+
+  .designbridge-panel-response {
+    background: #064e3b;
+    border-color: #374151;
+    color: #d1fae5;
+  }
+}
