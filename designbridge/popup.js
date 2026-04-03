@@ -111,15 +111,18 @@ async function checkBridge() {
     }
   } catch (e) { /* not running */ }
 
-  // Also check if background has a running bridge via native messaging
-  chrome.runtime.sendMessage({ type: 'getBridgeStatus' }, (response) => {
-    if (chrome.runtime.lastError) { showDisconnected(); return; }
-    if (response?.running) {
-      showConnected(response.project);
-    } else {
-      showDisconnected();
-    }
-  });
+  // Bridge not reachable — show the connect button immediately
+  showDisconnected();
+
+  // Also check if background already has a running bridge via native messaging
+  try {
+    chrome.runtime?.sendMessage({ type: 'getBridgeStatus' }, (response) => {
+      if (chrome.runtime.lastError) return;
+      if (response?.running) {
+        showConnected(response.project);
+      }
+    });
+  } catch (e) { /* not in extension context */ }
 
   return false;
 }
