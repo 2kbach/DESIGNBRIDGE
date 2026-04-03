@@ -23,11 +23,16 @@ v0.2.0
 ## Case Study
 > **2026-04-02** — Started CLAUDE DESIGNED as a concept project for designer-first AI tools. The flagship product is DesignBridge, a Chrome extension. The core insight: designers who build with AI don't want to context-switch to code editors. They're staring at the rendered output — the browser IS their IDE. Built the entire v1 in one session: content script handles all the DOM interaction (hover highlight, click-to-select, floating panel), a tiny Node bridge server pipes structured prompts to Claude Code CLI, and the extension falls back to clipboard if the bridge isn't running. No build step, no frameworks — just vanilla JS that gets injected into any page. The prompt engineering was key: capturing the right amount of context (computed styles, parent DOM structure, viewport info) without overwhelming Claude with noise.
 >
+> **2026-04-02** — Restyled the entire extension to match Apple's Human Interface Guidelines. Then built auto-start: Chrome extensions can't spawn processes, so used Chrome's Native Messaging API — a small Node host script registered with Chrome that opens a macOS folder picker and spawns the bridge server. Hit three bugs in a row: missing `storage` permission crashed the popup JS before any click handlers registered, `#!/usr/bin/env node` didn't work because Chrome doesn't load shell profiles (Homebrew's node isn't in Chrome's PATH), and the stdin reader for native messaging had a buffer handling bug that misread partial data as giant message lengths. All three fixed by debugging with the user in real-time.
+>
 > **2026-04-02** — Restyled the entire extension to match Apple's Human Interface Guidelines. Popup uses SF Pro, system colors, native toggle switches, stepper controls, and grouped list sections like iOS Settings. The floating panel uses macOS-style frosted glass (backdrop-filter blur), system radius corners, and Apple's blue accent. Overlay highlight was softened to match Safari Web Inspector. Full dark mode using Apple's dark palette.
 
 ## Changelog
 - **2026-04-02** ✅ v0.1.0 — Initial build: manifest, content script, styles, background worker, popup, bridge server, icons
 - **2026-04-02** ✅ v0.2.0 — Apple HIG redesign: SF Pro fonts, system colors, toggle switches, frosted glass panel, Safari-style overlay
+- **2026-04-02** ✅ v0.3.0 — Exact Apple platform system colors from HIG spec, removed generated icons
+- **2026-04-02** ✅ v0.4.0 — Auto-start bridge server via Chrome Native Messaging. Folder picker dialog, one-click project selection from popup
+- **2026-04-02** ✅ v0.4.1 — Fix: Show button by default, add storage permission, fix native host stdin buffering, absolute node shebang
 
 ## Feature Parking Lot
 - **2026-04-02** — Live diff preview in browser before accepting changes *(from spec)*
