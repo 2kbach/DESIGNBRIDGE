@@ -143,23 +143,29 @@ chrome.runtime.onMessage.addListener((msg) => {
 // ========== FOLDER PICKER / AUTO-START ==========
 
 pickFolderBtn.addEventListener('click', () => {
+  console.log('DesignBridge: pickFolder button clicked');
   showConnecting();
 
-  // Tell background to open folder picker and start bridge
-  chrome.runtime.sendMessage({ type: 'pickFolder' }, (response) => {
-    if (chrome.runtime.lastError) {
-      showDisconnected();
-      statusText.textContent = 'Install native host first';
-    }
-  });
+  try {
+    chrome.runtime.sendMessage({ type: 'pickFolder' }, (response) => {
+      console.log('DesignBridge: pickFolder response', response, chrome.runtime.lastError);
+      if (chrome.runtime.lastError) {
+        showDisconnected();
+        statusText.textContent = chrome.runtime.lastError.message || 'Native host error';
+      }
+    });
+  } catch (e) {
+    console.error('DesignBridge: pickFolder error', e);
+    showDisconnected();
+    statusText.textContent = 'Error: ' + e.message;
+  }
 
-  // The bridge status will come back via the bridgeStatus message listener
-  // Set a timeout in case nothing comes back
+  // Timeout fallback
   setTimeout(() => {
     if (statusText.textContent === 'Starting bridge...') {
       checkBridge();
     }
-  }, 5000);
+  }, 8000);
 });
 
 // ========== INSPECT TOGGLE ==========

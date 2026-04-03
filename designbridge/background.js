@@ -17,23 +17,28 @@ function connectNative() {
   if (nativePort) return;
 
   try {
+    console.log('DesignBridge: connecting to native host', NATIVE_HOST);
     nativePort = chrome.runtime.connectNative(NATIVE_HOST);
 
     nativePort.onMessage.addListener((msg) => {
+      console.log('DesignBridge: native message received', msg);
       handleNativeMessage(msg);
     });
 
     nativePort.onDisconnect.addListener(() => {
       const err = chrome.runtime.lastError?.message || 'disconnected';
+      console.error('DesignBridge: native host disconnected:', err);
       nativePort = null;
       bridgeRunning = false;
       bridgeProject = null;
       bridgeProjectDir = null;
-      // Notify any waiting callbacks
       Object.values(pendingCallbacks).forEach(cb => cb({ error: err }));
       pendingCallbacks = {};
     });
+
+    console.log('DesignBridge: native connection established');
   } catch (e) {
+    console.error('DesignBridge: connectNative failed:', e);
     nativePort = null;
   }
 }
