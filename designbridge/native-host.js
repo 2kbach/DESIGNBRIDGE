@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/opt/homebrew/bin/node
 
 // DesignBridge Native Messaging Host
 // Chrome launches this via Native Messaging API.

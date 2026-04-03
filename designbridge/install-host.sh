@@ -38,12 +38,19 @@ fi
 # Ensure native host is executable
 chmod +x "$NATIVE_HOST_PATH"
 
-# Ensure node shebang will work
+# Find node and patch the shebang so Chrome can find it
+# (Chrome doesn't load shell profiles, so /usr/bin/env node fails)
 NODE_PATH=$(which node)
 if [ -z "$NODE_PATH" ]; then
   echo "  Error: Node.js not found. Install Node.js first."
   exit 1
 fi
+
+echo "  Node found at: $NODE_PATH"
+
+# Replace the shebang with the absolute node path
+sed -i '' "1s|^#!.*|#!${NODE_PATH}|" "$NATIVE_HOST_PATH"
+echo "  Updated shebang to: #!${NODE_PATH}"
 
 # Create target directory
 mkdir -p "$TARGET_DIR"
