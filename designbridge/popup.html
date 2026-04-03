@@ -3,244 +3,406 @@
 <head>
   <meta charset="UTF-8">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      width: 300px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 13px;
-      color: #1f2937;
-      background: #fff;
+    :root {
+      --system-bg: #f5f5f7;
+      --system-bg-secondary: #ffffff;
+      --system-bg-tertiary: #f0f0f2;
+      --system-separator: rgba(0, 0, 0, 0.08);
+      --system-label: #1d1d1f;
+      --system-label-secondary: #86868b;
+      --system-label-tertiary: #aeaeb2;
+      --system-fill: rgba(120, 120, 128, 0.12);
+      --system-blue: #007aff;
+      --system-green: #34c759;
+      --system-red: #ff3b30;
+      --system-orange: #ff9500;
+      --system-radius: 10px;
+      --system-radius-sm: 7px;
     }
 
     @media (prefers-color-scheme: dark) {
-      body { background: #1f2937; color: #f3f4f6; }
-      .header { border-color: #374151; }
-      .section { border-color: #374151; }
-      label { color: #d1d5db; }
-      select, input[type="text"], input[type="number"] {
-        background: #111827; color: #f3f4f6; border-color: #374151;
+      :root {
+        --system-bg: #1c1c1e;
+        --system-bg-secondary: #2c2c2e;
+        --system-bg-tertiary: #3a3a3c;
+        --system-separator: rgba(255, 255, 255, 0.08);
+        --system-label: #f5f5f7;
+        --system-label-secondary: #98989d;
+        --system-label-tertiary: #636366;
+        --system-fill: rgba(120, 120, 128, 0.24);
       }
-      .status-dot.connected { background: #34d399; }
-      .status-dot.disconnected { background: #f87171; }
-      .status-text { color: #9ca3af; }
-      .toggle-btn { background: #374151; color: #e5e7eb; border-color: #4b5563; }
-      .toggle-btn:hover { background: #4b5563; }
-      .toggle-btn.active { background: #6366f1; border-color: #6366f1; color: #fff; }
     }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 320px;
+      font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', sans-serif;
+      font-size: 13px;
+      color: var(--system-label);
+      background: var(--system-bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ========== HEADER ========== */
     .header {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 14px 16px;
-      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 16px 12px;
     }
 
-    .header img {
-      width: 24px;
-      height: 24px;
-    }
-
-    .header h1 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #6366f1;
-    }
-
-    .header .version {
-      font-size: 10px;
-      color: #9ca3af;
-      margin-left: auto;
-    }
-
-    .status-row {
+    .header-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #5ac8fa 0%, #007aff 100%);
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 16px;
-      border-bottom: 1px solid #e5e7eb;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0, 122, 255, 0.3);
     }
 
-    .status-dot {
+    .header-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .header-text h1 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      color: var(--system-label);
+    }
+
+    .header-text .subtitle {
+      font-size: 11px;
+      color: var(--system-label-tertiary);
+      letter-spacing: -0.1px;
+    }
+
+    /* ========== STATUS + TOGGLE ========== */
+    .status-card {
+      margin: 0 12px 12px;
+      background: var(--system-bg-secondary);
+      border-radius: var(--system-radius);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-indicator {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #9ca3af;
+      background: var(--system-label-tertiary);
       flex-shrink: 0;
     }
 
-    .status-dot.connected { background: #10b981; }
-    .status-dot.disconnected { background: #ef4444; }
+    .status-indicator.connected { background: var(--system-green); box-shadow: 0 0 6px rgba(52, 199, 89, 0.4); }
+    .status-indicator.disconnected { background: var(--system-red); }
 
-    .status-text {
-      font-size: 11px;
-      color: #6b7280;
+    .status-label {
       flex: 1;
-    }
-
-    .toggle-btn {
-      padding: 5px 12px;
-      border-radius: 6px;
       font-size: 12px;
-      font-weight: 500;
+      color: var(--system-label-secondary);
+      letter-spacing: -0.1px;
+    }
+
+    .inspect-toggle {
+      position: relative;
+      width: 44px;
+      height: 26px;
+      border-radius: 13px;
+      background: var(--system-fill);
+      border: none;
       cursor: pointer;
-      border: 1px solid #d1d5db;
+      transition: background 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .inspect-toggle.active {
+      background: var(--system-blue);
+    }
+
+    .inspect-toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 22px;
+      height: 22px;
+      border-radius: 11px;
       background: #fff;
-      color: #374151;
-      transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), 0 0 0.5px rgba(0, 0, 0, 0.06);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .toggle-btn:hover {
-      background: #f3f4f6;
+    .inspect-toggle.active::after {
+      transform: translateX(18px);
     }
 
-    .toggle-btn.active {
-      background: #6366f1;
-      color: #fff;
-      border-color: #6366f1;
+    /* ========== GROUPED LIST SECTIONS ========== */
+    .list-section {
+      margin: 0 12px 12px;
     }
 
-    .section {
-      padding: 12px 16px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .section:last-child {
-      border-bottom: none;
-    }
-
-    .section h2 {
+    .list-header {
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #9ca3af;
-      margin-bottom: 8px;
+      color: var(--system-label-tertiary);
+      padding: 0 4px 6px;
     }
 
-    .field {
+    .list-group {
+      background: var(--system-bg-secondary);
+      border-radius: var(--system-radius);
+      overflow: hidden;
+    }
+
+    .list-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      padding: 10px 14px;
+      min-height: 44px;
     }
 
-    .field:last-child {
-      margin-bottom: 0;
+    .list-row + .list-row {
+      border-top: 0.5px solid var(--system-separator);
+      margin-left: 14px;
+      padding-left: 0;
     }
 
-    label {
-      font-size: 12px;
-      color: #4b5563;
+    .list-row label {
+      font-size: 13px;
+      color: var(--system-label);
+      letter-spacing: -0.1px;
     }
 
-    select, input[type="text"], input[type="number"] {
-      padding: 4px 8px;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-      font-size: 12px;
-      background: #fff;
-      color: #1f2937;
+    /* Apple-style select */
+    .system-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: var(--system-fill);
+      border: none;
+      border-radius: var(--system-radius-sm);
+      padding: 5px 28px 5px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--system-blue);
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23007AFF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
       outline: none;
     }
 
-    select:focus, input:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+    .system-select:focus {
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
     }
 
-    input[type="number"] {
-      width: 50px;
-      text-align: center;
-    }
-
-    input[type="text"] {
-      width: 170px;
-    }
-
-    .checkbox-field {
+    /* Apple-style stepper */
+    .stepper {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 0;
+      background: var(--system-fill);
+      border-radius: var(--system-radius-sm);
+      overflow: hidden;
     }
 
-    .checkbox-field input[type="checkbox"] {
-      accent-color: #6366f1;
+    .stepper button {
+      width: 32px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      color: var(--system-blue);
+      font-size: 16px;
+      font-weight: 400;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
     }
 
-    .shortcut {
-      font-size: 10px;
-      color: #9ca3af;
+    .stepper button:active {
+      background: rgba(0, 122, 255, 0.1);
+    }
+
+    .stepper .stepper-value {
+      width: 28px;
       text-align: center;
-      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--system-label);
+      font-variant-numeric: tabular-nums;
+      border-left: 0.5px solid var(--system-separator);
+      border-right: 0.5px solid var(--system-separator);
+      line-height: 28px;
+    }
+
+    /* Apple-style checkbox toggle */
+    .mini-toggle {
+      position: relative;
+      width: 34px;
+      height: 20px;
+      border-radius: 10px;
+      background: var(--system-fill);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .mini-toggle.active {
+      background: var(--system-green);
+    }
+
+    .mini-toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mini-toggle.active::after {
+      transform: translateX(14px);
+    }
+
+    /* Apple-style text input */
+    .system-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--system-radius-sm);
+      background: var(--system-fill);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--system-label);
+      outline: none;
+      letter-spacing: -0.1px;
+    }
+
+    .system-input::placeholder {
+      color: var(--system-label-tertiary);
+    }
+
+    .system-input:focus {
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+    }
+
+    .input-row {
+      padding: 10px 14px;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      padding: 8px 16px 12px;
+      text-align: center;
+    }
+
+    .footer-shortcut {
+      font-size: 11px;
+      color: var(--system-label-tertiary);
+      letter-spacing: -0.1px;
     }
 
     kbd {
-      background: #f3f4f6;
-      border: 1px solid #d1d5db;
-      border-radius: 3px;
-      padding: 1px 5px;
-      font-family: 'SF Mono', monospace;
+      display: inline-block;
+      background: var(--system-fill);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: 'SF Mono', 'Menlo', monospace;
       font-size: 10px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      kbd { background: #374151; border-color: #4b5563; color: #d1d5db; }
+      color: var(--system-label-secondary);
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
+
   <div class="header">
-    <img src="icons/icon-48.png" alt="">
-    <h1>DesignBridge</h1>
-    <span class="version">v0.1.0</span>
-  </div>
-
-  <div class="status-row">
-    <div class="status-dot" id="statusDot"></div>
-    <span class="status-text" id="statusText">Checking bridge...</span>
-    <button class="toggle-btn" id="toggleBtn">Inspect</button>
-  </div>
-
-  <div class="section">
-    <h2>Capture Settings</h2>
-    <div class="field">
-      <label>Style capture</label>
-      <select id="stylePreset">
-        <option value="all">All properties</option>
-        <option value="layout">Layout only</option>
-        <option value="typography">Typography only</option>
-        <option value="colors">Colors only</option>
-      </select>
+    <div class="header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="6"/>
+        <line x1="12" y1="2" x2="12" y2="7"/>
+        <line x1="12" y1="17" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="7" y2="12"/>
+        <line x1="17" y1="12" x2="22" y2="12"/>
+      </svg>
     </div>
-    <div class="field">
-      <label>Parent context depth</label>
-      <input type="number" id="contextDepth" min="1" max="5" value="3">
-    </div>
-    <div class="field checkbox-field">
-      <input type="checkbox" id="includeScreenshot" checked>
-      <label for="includeScreenshot">Include element screenshot</label>
+    <div class="header-text">
+      <h1>DesignBridge</h1>
+      <div class="subtitle">Visual editor for Claude Code</div>
     </div>
   </div>
 
-  <div class="section">
-    <h2>Bridge Server</h2>
-    <div class="field">
-      <label>URL</label>
-      <input type="text" id="bridgeUrl" value="http://localhost:7890" placeholder="http://localhost:7890">
+  <div class="status-card">
+    <div class="status-indicator" id="statusDot"></div>
+    <span class="status-label" id="statusText">Checking bridge...</span>
+    <button class="inspect-toggle" id="toggleBtn" title="Toggle Inspect Mode"></button>
+  </div>
+
+  <div class="list-section">
+    <div class="list-header">Capture</div>
+    <div class="list-group">
+      <div class="list-row">
+        <label>Properties</label>
+        <select class="system-select" id="stylePreset">
+          <option value="all">All</option>
+          <option value="layout">Layout</option>
+          <option value="typography">Typography</option>
+          <option value="colors">Colors</option>
+        </select>
+      </div>
+      <div class="list-row">
+        <label>Context Depth</label>
+        <div class="stepper">
+          <button id="depthMinus">&minus;</button>
+          <span class="stepper-value" id="depthValue">3</span>
+          <button id="depthPlus">+</button>
+        </div>
+      </div>
+      <div class="list-row">
+        <label>Screenshot</label>
+        <button class="mini-toggle active" id="screenshotToggle"></button>
+      </div>
     </div>
   </div>
 
-  <div class="section">
-    <h2>Prompt Prefix</h2>
-    <div class="field">
-      <input type="text" id="promptPrefix" style="width: 100%;" placeholder="e.g. Check the Tailwind config first">
+  <div class="list-section">
+    <div class="list-header">Connection</div>
+    <div class="list-group">
+      <div class="input-row">
+        <input type="text" class="system-input" id="bridgeUrl" value="http://localhost:7890" placeholder="Bridge server URL">
+      </div>
     </div>
   </div>
 
-  <div class="shortcut">
-    Toggle inspect: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>
+  <div class="list-section">
+    <div class="list-header">Prompt Prefix</div>
+    <div class="list-group">
+      <div class="input-row">
+        <input type="text" class="system-input" id="promptPrefix" placeholder="e.g. Check the Tailwind config first">
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-shortcut">
+      <kbd>&#8984;</kbd> <kbd>&#8679;</kbd> <kbd>X</kbd> to toggle inspect
+    </div>
   </div>
 
   <script src="popup.js"></script>

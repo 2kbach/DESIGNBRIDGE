@@ -345,7 +345,11 @@ ${parentHTML}
     panelElement.innerHTML = `
       <div class="designbridge-panel-header">
         <span class="designbridge-panel-tag">${tag}${id}${cls}</span>
-        <button class="designbridge-panel-close" title="Cancel (Esc)">\u00d7</button>
+        <button class="designbridge-panel-close" title="Cancel (Esc)">
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+            <path d="M1 1L7 7M7 1L1 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
       </div>
       <div class="designbridge-panel-selector">${selectorPath}</div>
       <textarea
@@ -355,10 +359,10 @@ ${parentHTML}
       ></textarea>
       <div class="designbridge-panel-actions">
         <div class="designbridge-panel-status"></div>
-        <button class="designbridge-panel-btn secondary" data-action="copy">Copy to Claude</button>
+        <button class="designbridge-panel-btn secondary" data-action="copy">Copy</button>
         <button class="designbridge-panel-btn primary" data-action="send">Send to Claude</button>
       </div>
-      <div class="designbridge-panel-hint">Cmd+Enter to send \u00b7 Esc to cancel</div>
+      <div class="designbridge-panel-hint">\u2318\u21e7 Enter to send \u00b7 Esc to cancel</div>
     `;
 
     document.body.appendChild(panelElement);
