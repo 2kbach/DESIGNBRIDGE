@@ -1,19 +1,48 @@
-/* DesignBridge — Apple HIG-inspired overlay & panel styles */
+/* DesignBridge — Apple Platform System Colors */
+/* Values sourced from Apple HIG: developer.apple.com/design/human-interface-guidelines/color */
 
 :root {
+  /* System Colors — Light */
+  --db-blue: #007AFF;
+  --db-green: #34C759;
+  --db-red: #FF3B30;
+  --db-orange: #FF9500;
+  --db-yellow: #FFCC00;
+  --db-teal: #5AC8FA;
+  --db-indigo: #5856D6;
+  --db-purple: #AF52DE;
+  --db-pink: #FF2D55;
+
+  /* Label Colors — Light */
+  --db-label: rgba(0, 0, 0, 1.0);
+  --db-label-secondary: rgba(60, 60, 67, 0.6);
+  --db-label-tertiary: rgba(60, 60, 67, 0.3);
+  --db-label-quaternary: rgba(60, 60, 67, 0.18);
+
+  /* Fill Colors — Light */
+  --db-fill: rgba(120, 120, 128, 0.2);
+  --db-fill-secondary: rgba(120, 120, 128, 0.16);
+  --db-fill-tertiary: rgba(118, 118, 128, 0.12);
+  --db-fill-quaternary: rgba(116, 116, 128, 0.08);
+
+  /* Background Colors — Light (Grouped) */
   --db-bg: rgba(255, 255, 255, 0.92);
-  --db-bg-secondary: #f5f5f7;
-  --db-separator: rgba(0, 0, 0, 0.08);
-  --db-label: #1d1d1f;
-  --db-label-secondary: #86868b;
-  --db-label-tertiary: #aeaeb2;
-  --db-fill: rgba(120, 120, 128, 0.12);
-  --db-blue: #007aff;
-  --db-green: #34c759;
-  --db-red: #ff3b30;
-  --db-orange: #ff9500;
+  --db-bg-grouped: #F2F2F7;
+  --db-bg-grouped-secondary: #FFFFFF;
+  --db-bg-grouped-tertiary: #F2F2F7;
+
+  /* Separator Colors — Light */
+  --db-separator: rgba(60, 60, 67, 0.29);
+  --db-separator-opaque: #C6C6C8;
+
+  /* Placeholder */
+  --db-placeholder: rgba(60, 60, 67, 0.3);
+
+  /* Tint for highlight overlay */
   --db-tint: rgba(0, 122, 255, 0.06);
   --db-tint-border: rgba(0, 122, 255, 0.35);
+
+  /* Radii & Typography */
   --db-radius: 10px;
   --db-radius-sm: 7px;
   --db-font: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', system-ui, sans-serif;
@@ -65,7 +94,7 @@
   background: var(--db-bg);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   backdrop-filter: blur(40px) saturate(180%);
-  border: 0.5px solid rgba(0, 0, 0, 0.12);
+  border: 0.5px solid var(--db-separator);
   border-radius: 12px;
   box-shadow:
     0 0 0 0.5px rgba(0, 0, 0, 0.04),
@@ -102,7 +131,7 @@
 }
 
 .designbridge-panel-close {
-  background: var(--db-fill);
+  background: var(--db-fill-tertiary);
   border: none;
   width: 22px;
   height: 22px;
@@ -118,7 +147,7 @@
 }
 
 .designbridge-panel-close:hover {
-  background: rgba(120, 120, 128, 0.2);
+  background: var(--db-fill);
   color: var(--db-label);
 }
 
@@ -158,7 +187,7 @@
 }
 
 .designbridge-panel-input::placeholder {
-  color: var(--db-label-tertiary);
+  color: var(--db-placeholder);
 }
 
 .designbridge-panel-input:focus {
@@ -215,25 +244,25 @@
 }
 
 .designbridge-panel-btn.primary:hover:not(:disabled) {
-  background: #0071e3;
+  filter: brightness(0.92);
 }
 
 .designbridge-panel-btn.primary:active:not(:disabled) {
-  background: #0064cc;
+  filter: brightness(0.85);
   transform: scale(0.97);
 }
 
 .designbridge-panel-btn.secondary {
-  background: var(--db-fill);
+  background: var(--db-fill-tertiary);
   color: var(--db-blue);
 }
 
 .designbridge-panel-btn.secondary:hover:not(:disabled) {
-  background: rgba(120, 120, 128, 0.18);
+  background: var(--db-fill-secondary);
 }
 
 .designbridge-panel-btn.secondary:active:not(:disabled) {
-  background: rgba(120, 120, 128, 0.24);
+  background: var(--db-fill);
   transform: scale(0.97);
 }
 
@@ -262,22 +291,52 @@
 }
 
 /* ========== DARK MODE ========== */
+/* Apple HIG Dark Mode system colors */
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --db-bg: rgba(44, 44, 46, 0.88);
-    --db-bg-secondary: #3a3a3c;
-    --db-separator: rgba(255, 255, 255, 0.08);
-    --db-label: #f5f5f7;
-    --db-label-secondary: #98989d;
-    --db-label-tertiary: #636366;
-    --db-fill: rgba(120, 120, 128, 0.24);
-    --db-tint: rgba(0, 122, 255, 0.08);
-    --db-tint-border: rgba(0, 122, 255, 0.4);
+    /* System Colors — Dark */
+    --db-blue: #0A84FF;
+    --db-green: #30D158;
+    --db-red: #FF453A;
+    --db-orange: #FF9F0A;
+    --db-yellow: #FFD60A;
+    --db-teal: #64D2FF;
+    --db-indigo: #5E5CE6;
+    --db-purple: #BF5AF2;
+    --db-pink: #FF375F;
+
+    /* Label Colors — Dark */
+    --db-label: rgba(255, 255, 255, 1.0);
+    --db-label-secondary: rgba(235, 235, 245, 0.6);
+    --db-label-tertiary: rgba(235, 235, 245, 0.3);
+    --db-label-quaternary: rgba(235, 235, 245, 0.18);
+
+    /* Fill Colors — Dark */
+    --db-fill: rgba(120, 120, 128, 0.36);
+    --db-fill-secondary: rgba(120, 120, 128, 0.32);
+    --db-fill-tertiary: rgba(118, 118, 128, 0.24);
+    --db-fill-quaternary: rgba(118, 118, 128, 0.18);
+
+    /* Background Colors — Dark (Grouped) */
+    --db-bg: rgba(28, 28, 30, 0.88);
+    --db-bg-grouped: #000000;
+    --db-bg-grouped-secondary: #1C1C1E;
+    --db-bg-grouped-tertiary: #2C2C2E;
+
+    /* Separator Colors — Dark */
+    --db-separator: rgba(84, 84, 88, 0.6);
+    --db-separator-opaque: #38383A;
+
+    /* Placeholder — Dark */
+    --db-placeholder: rgba(235, 235, 245, 0.3);
+
+    /* Tint — Dark */
+    --db-tint: rgba(10, 132, 255, 0.08);
+    --db-tint-border: rgba(10, 132, 255, 0.4);
   }
 
   #designbridge-panel {
-    border-color: rgba(255, 255, 255, 0.08);
     box-shadow:
       0 0 0 0.5px rgba(255, 255, 255, 0.06),
       0 8px 40px rgba(0, 0, 0, 0.4),
@@ -286,23 +345,15 @@
 
   .designbridge-panel-input {
     background: rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.08);
   }
 
   .designbridge-panel-input:focus {
     background: rgba(0, 0, 0, 0.3);
-  }
-
-  .designbridge-panel-close {
-    background: rgba(120, 120, 128, 0.3);
-  }
-
-  .designbridge-panel-close:hover {
-    background: rgba(120, 120, 128, 0.4);
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
   }
 
   .designbridge-panel-response {
-    background: rgba(52, 199, 89, 0.08);
-    color: #d1fae5;
+    background: rgba(48, 209, 88, 0.08);
+    color: rgba(235, 235, 245, 0.85);
   }
 }

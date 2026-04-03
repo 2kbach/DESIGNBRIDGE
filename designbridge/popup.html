@@ -3,33 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <style>
+    /* Apple HIG System Colors — developer.apple.com/design/human-interface-guidelines/color */
     :root {
-      --system-bg: #f5f5f7;
-      --system-bg-secondary: #ffffff;
-      --system-bg-tertiary: #f0f0f2;
-      --system-separator: rgba(0, 0, 0, 0.08);
-      --system-label: #1d1d1f;
-      --system-label-secondary: #86868b;
-      --system-label-tertiary: #aeaeb2;
-      --system-fill: rgba(120, 120, 128, 0.12);
-      --system-blue: #007aff;
-      --system-green: #34c759;
-      --system-red: #ff3b30;
-      --system-orange: #ff9500;
+      /* Backgrounds — Light (Grouped layout) */
+      --system-bg: #F2F2F7;
+      --system-bg-secondary: #FFFFFF;
+      --system-bg-tertiary: #F2F2F7;
+
+      /* Labels — Light */
+      --system-label: rgba(0, 0, 0, 1.0);
+      --system-label-secondary: rgba(60, 60, 67, 0.6);
+      --system-label-tertiary: rgba(60, 60, 67, 0.3);
+
+      /* Fills — Light */
+      --system-fill: rgba(120, 120, 128, 0.2);
+      --system-fill-secondary: rgba(120, 120, 128, 0.16);
+      --system-fill-tertiary: rgba(118, 118, 128, 0.12);
+
+      /* Separators — Light */
+      --system-separator: rgba(60, 60, 67, 0.29);
+      --system-separator-opaque: #C6C6C8;
+
+      /* System Colors — Light */
+      --system-blue: #007AFF;
+      --system-green: #34C759;
+      --system-red: #FF3B30;
+      --system-orange: #FF9500;
+
       --system-radius: 10px;
       --system-radius-sm: 7px;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --system-bg: #1c1c1e;
-        --system-bg-secondary: #2c2c2e;
-        --system-bg-tertiary: #3a3a3c;
-        --system-separator: rgba(255, 255, 255, 0.08);
-        --system-label: #f5f5f7;
-        --system-label-secondary: #98989d;
-        --system-label-tertiary: #636366;
-        --system-fill: rgba(120, 120, 128, 0.24);
+        /* Backgrounds — Dark (Grouped layout) */
+        --system-bg: #000000;
+        --system-bg-secondary: #1C1C1E;
+        --system-bg-tertiary: #2C2C2E;
+
+        /* Labels — Dark */
+        --system-label: rgba(255, 255, 255, 1.0);
+        --system-label-secondary: rgba(235, 235, 245, 0.6);
+        --system-label-tertiary: rgba(235, 235, 245, 0.3);
+
+        /* Fills — Dark */
+        --system-fill: rgba(120, 120, 128, 0.36);
+        --system-fill-secondary: rgba(120, 120, 128, 0.32);
+        --system-fill-tertiary: rgba(118, 118, 128, 0.24);
+
+        /* Separators — Dark */
+        --system-separator: rgba(84, 84, 88, 0.6);
+        --system-separator-opaque: #38383A;
+
+        /* System Colors — Dark */
+        --system-blue: #0A84FF;
+        --system-green: #30D158;
+        --system-red: #FF453A;
+        --system-orange: #FF9F0A;
       }
     }
 
@@ -51,22 +81,6 @@
       align-items: center;
       gap: 10px;
       padding: 16px 16px 12px;
-    }
-
-    .header-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: linear-gradient(180deg, #5ac8fa 0%, #007aff 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 1px 3px rgba(0, 122, 255, 0.3);
-    }
-
-    .header-icon svg {
-      width: 18px;
-      height: 18px;
     }
 
     .header-text h1 {
@@ -101,7 +115,7 @@
       flex-shrink: 0;
     }
 
-    .status-indicator.connected { background: var(--system-green); box-shadow: 0 0 6px rgba(52, 199, 89, 0.4); }
+    .status-indicator.connected { background: var(--system-green); box-shadow: 0 0 6px color-mix(in srgb, var(--system-green) 40%, transparent); }
     .status-indicator.disconnected { background: var(--system-red); }
 
     .status-label {
@@ -196,14 +210,14 @@
       font-family: inherit;
       color: var(--system-blue);
       cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23007AFF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 8px center;
       outline: none;
     }
 
     .system-select:focus {
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--system-blue) 20%, transparent);
     }
 
     /* Apple-style stepper */
@@ -232,7 +246,7 @@
     }
 
     .stepper button:active {
-      background: rgba(0, 122, 255, 0.1);
+      background: color-mix(in srgb, var(--system-blue) 10%, transparent);
     }
 
     .stepper .stepper-value {
@@ -299,7 +313,7 @@
     }
 
     .system-input:focus {
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--system-blue) 20%, transparent);
     }
 
     .input-row {
@@ -333,15 +347,6 @@
 <body>
 
   <div class="header">
-    <div class="header-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
-        <circle cx="12" cy="12" r="6"/>
-        <line x1="12" y1="2" x2="12" y2="7"/>
-        <line x1="12" y1="17" x2="12" y2="22"/>
-        <line x1="2" y1="12" x2="7" y2="12"/>
-        <line x1="17" y1="12" x2="22" y2="12"/>
-      </svg>
-    </div>
     <div class="header-text">
       <h1>DesignBridge</h1>
       <div class="subtitle">Visual editor for Claude Code</div>

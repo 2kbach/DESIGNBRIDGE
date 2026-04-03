@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "DesignBridge",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Select elements visually, describe changes, send to Claude Code",
   "permissions": [
     "activeTab",
@@ -11,12 +11,7 @@
     "http://localhost:7890/*"
   ],
   "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/icon-16.png",
-      "48": "icons/icon-48.png",
-      "128": "icons/icon-128.png"
-    }
+    "default_popup": "popup.html"
   },
   "content_scripts": [
     {
@@ -37,10 +32,5 @@
       },
       "description": "Toggle inspect mode"
     }
-  },
-  "icons": {
-    "16": "icons/icon-16.png",
-    "48": "icons/icon-48.png",
-    "128": "icons/icon-128.png"
   }
 }
