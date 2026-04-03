@@ -143,11 +143,13 @@ chrome.runtime.onMessage.addListener((msg) => {
 // ========== FOLDER PICKER / AUTO-START ==========
 
 pickFolderBtn.addEventListener('click', () => {
+  debugger; // ← WILL PAUSE HERE — open DevTools first!
   console.log('DesignBridge: pickFolder button clicked');
   showConnecting();
 
   try {
     chrome.runtime.sendMessage({ type: 'pickFolder' }, (response) => {
+      debugger; // ← WILL PAUSE on response
       console.log('DesignBridge: pickFolder response', response, chrome.runtime.lastError);
       if (chrome.runtime.lastError) {
         showDisconnected();
@@ -155,6 +157,7 @@ pickFolderBtn.addEventListener('click', () => {
       }
     });
   } catch (e) {
+    debugger; // ← WILL PAUSE on error
     console.error('DesignBridge: pickFolder error', e);
     showDisconnected();
     statusText.textContent = 'Error: ' + e.message;
